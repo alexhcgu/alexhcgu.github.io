@@ -1,0 +1,696 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="https://s2.loli.net/2021/12/25/5HvmadNqYUPrWCz.png">
+  <link rel="icon" href="https://s2.loli.net/2021/12/25/5HvmadNqYUPrWCz.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Alex Gu">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="Minecraft is a sandbox video game developed my Mojang. It is one of the most popular video games in the world. In Minecraft Wikipedia page, it introduces: In Minecraft, players explore a blocky, proce">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Running a Minecraft Server on Raspberry Pi">
+<meta property="og:url" content="http://alexhcgu.github.io/2020/12/20/mcserver/index.html">
+<meta property="og:site_name" content="Haochen">
+<meta property="og:description" content="Minecraft is a sandbox video game developed my Mojang. It is one of the most popular video games in the world. In Minecraft Wikipedia page, it introduces: In Minecraft, players explore a blocky, proce">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://s2.loli.net/2021/12/31/TsC8NFeEzgrl7KO.png">
+<meta property="article:published_time" content="2020-12-20T05:00:00.000Z">
+<meta property="article:modified_time" content="2021-12-31T11:46:05.000Z">
+<meta property="article:author" content="Alex Gu">
+<meta property="article:tag" content="raspberry Pi">
+<meta property="article:tag" content="minecraft">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://s2.loli.net/2021/12/31/TsC8NFeEzgrl7KO.png">
+  
+  
+  
+  <title>Running a Minecraft Server on Raspberry Pi - Haochen</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1899486_bc7tjos7w9v.css">
+<link rel="stylesheet" href="/css/macpanel.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"alexhcgu.github.io","root":"/","version":"1.9.7","typing":{"enable":false,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.0.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Haochen</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('https://s2.loli.net/2021/12/25/OiBdcAFXh1x8ICM.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle">Running a Minecraft Server on Raspberry Pi</span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2020-12-20 00:00" pubdate>
+          December 20, 2020 am
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          <!-- compatible with older versions-->
+          474 words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          <!-- compatible with older versions-->
+          4 mins
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">Running a Minecraft Server on Raspberry Pi</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>Minecraft is a sandbox video game developed my Mojang. It is one of the most popular video games in the world. In Minecraft Wikipedia page, it introduces:</p>
+<p><em>In Minecraft, players explore a blocky, <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Procedurally-generated">procedurally-generated</a> <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/3D_computer_graphics">3D</a> world with infinite terrain, and may discover and extract raw materials, <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Crafting_(gaming)">craft</a> tools and items, and build structures or <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Earthworks_(engineering)">earthworks</a>. Depending on <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Game_mode">game mode</a>, players can fight computer-controlled “<a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Mob_(video_games)">mobs</a>“, as well as cooperate with or compete against other players in the same world. Game modes include a <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Survival_mode">survival mode</a>, in which players must acquire resources to build the world and maintain health, and a creative mode, where players have unlimited resources. Players can <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Minecraft_mods">modify the game</a> to create new gameplay mechanics, items, and assets.</em></p>
+<p>If you want to play with your friends, an doable method is to pay $14.99 for an official server. Fortunately, we can also set up the server on Raspberry Pi with almost zero cost.</p>
+<h2 id="Java-or-Bedrock"><a href="#Java-or-Bedrock" class="headerlink" title="Java or Bedrock?"></a>Java or Bedrock?</h2><p>Notice there is two version of Minecraft. Java edition uses Java language and works only on PC. Bedrock edition uses C++ and works on Android, iOS, Nintendo, and Win10 PC. It is easy to set a multilayer server on Java edition. Just run the following command:</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">java</span> -Xmx1024M -Xms1024M -jar minecraft_server.<span class="hljs-number">1</span>.<span class="hljs-number">16</span>.<span class="hljs-number">5</span>.jar nogui<br></code></pre></td></tr></table></figure>
+
+<p>However, I want the server have a wider device compatibility, so I decide to set up a Bedrock server. Unfortunately,  it only works on Windows or Ubuntu 64-bit system. For some unknown reason, though Raspberry Pi 4B has a 64-bit CPU, its operating system Raspbian is still 32-bit. I manage to install a third-party Debian but still cannot run the Ubuntu package.</p>
+<p><img src="https://z3.ax1x.com/2021/03/25/6LOPDH.md.png" srcset="/img/loading.gif" lazyload alt="6LOPDH.md.png"></p>
+<p>So I have to use third-party server package. And here it is, <a target="_blank" rel="noopener" href="https://getbukkit.org/">https://getbukkit.org/</a></p>
+<h2 id="Configuration"><a href="#Configuration" class="headerlink" title="Configuration"></a>Configuration</h2><p><strong>1</strong> After downloading the jar file, FTP the file to Raspberry Pi</p>
+<p><strong>2</strong> Writing a sh script to simply the start up process. As you need to allocate the RAM every time.</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">sudo nano runserver.sh 	//making a new sh file and edit with nano<br></code></pre></td></tr></table></figure>
+
+<p>Type in:</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs sh"><span class="hljs-keyword">while</span> <span class="hljs-literal">true</span><br><br><span class="hljs-keyword">do</span><br><br>sudo java -Xms768M -Xmx1024M -jar /home/mc.jar nogui<br><br><span class="hljs-keyword">done</span><br></code></pre></td></tr></table></figure>
+
+<p>After done, Ctrl+O to write the file and Ctrl+X to exit.</p>
+<p>Note that -Xms and -Xmx indicate the maximum and minimum RAM the server can use. nogui means run without user interface.</p>
+<h2 id="Running-the-server"><a href="#Running-the-server" class="headerlink" title="Running the server"></a>Running the server</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">sh runserver.sh <br></code></pre></td></tr></table></figure>
+
+<p>The sever cannot run successfully at first time as you need to agree the EULA statement first. Stop the server, open eula.txt with nano:</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">sudo nano eula.txt<br></code></pre></td></tr></table></figure>
+
+<p>Change eula to true:</p>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs ini"><span class="hljs-attr">eula</span>=<span class="hljs-literal">true</span><br></code></pre></td></tr></table></figure>
+
+<p>Run the server again:</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">sh runserver.sh <br></code></pre></td></tr></table></figure>
+
+<p><img src="https://z3.ax1x.com/2021/03/25/6LLFhV.md.jpg" srcset="/img/loading.gif" lazyload></p>
+<p>And the server is running!</p>
+<h2 id="Change-server-properties"><a href="#Change-server-properties" class="headerlink" title="Change server properties"></a>Change server properties</h2><p>Open  server.properties with nano:</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sh">sudo nano server.properties<br></code></pre></td></tr></table></figure>
+
+<p>The server properties can be changed in the file. These is the explanation from <a target="_blank" rel="noopener" href="https://minecraft.fandom.com/wiki/Server.properties">Offical Minecraft Wiki</a></p>
+<figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br></pre></td><td class="code"><pre><code class="hljs properties"><span class="hljs-attr">server-name</span>=<span class="hljs-string">Dedicated Server</span><br><span class="hljs-comment"># Used as the server name</span><br><span class="hljs-comment"># Allowed values: Any string without semicolon symbol.</span><br><br><span class="hljs-attr">gamemode</span>=<span class="hljs-string">survival</span><br><span class="hljs-comment"># Sets the game mode for new players.</span><br><span class="hljs-comment"># Allowed values: &quot;survival&quot;, &quot;creative&quot;, or &quot;adventure&quot;</span><br><br><span class="hljs-attr">force-gamemode</span>=<span class="hljs-string">false</span><br><span class="hljs-comment"># force-gamemode=false (or force-gamemode  is not defined in the server.properties)</span><br><span class="hljs-comment"># prevents the server from sending to the client gamemode values other</span><br><span class="hljs-comment"># than the gamemode value saved by the server during world creation</span><br><span class="hljs-comment"># even if those values are set in server.properties after world creation.</span><br><span class="hljs-comment"># </span><br><span class="hljs-comment"># force-gamemode=true forces the server to send to the client gamemode values</span><br><span class="hljs-comment"># other than the gamemode value saved by the server during world creation</span><br><span class="hljs-comment"># if those values are set in server.properties after world creation.</span><br><br><span class="hljs-attr">difficulty</span>=<span class="hljs-string">easy</span><br><span class="hljs-comment"># Sets the difficulty of the world.</span><br><span class="hljs-comment"># Allowed values: &quot;peaceful&quot;, &quot;easy&quot;, &quot;normal&quot;, or &quot;hard&quot;</span><br><br><span class="hljs-attr">allow-cheats</span>=<span class="hljs-string">false</span><br><span class="hljs-comment"># If true then cheats like commands can be used.</span><br><span class="hljs-comment"># Allowed values: &quot;true&quot; or &quot;false&quot;</span><br><br><span class="hljs-attr">max-players</span>=<span class="hljs-string">10</span><br><span class="hljs-comment"># The maximum number of players that can play on the server.</span><br><span class="hljs-comment"># Allowed values: Any positive integer</span><br><br><span class="hljs-attr">online-mode</span>=<span class="hljs-string">true</span><br><span class="hljs-comment"># If true then all connected players must be authenticated to Xbox Live.</span><br><span class="hljs-comment"># Clients connecting to remote (non-LAN) servers will always require Xbox Live authentication regardless of this setting.</span><br><span class="hljs-comment"># If the server accepts connections from the Internet, then it&#x27;s highly recommended to enable online-mode.</span><br><span class="hljs-comment"># Allowed values: &quot;true&quot; or &quot;false&quot;</span><br><br><span class="hljs-attr">white-list</span>=<span class="hljs-string">false</span><br><span class="hljs-comment"># If true then all connected players must be listed in the separate whitelist.json file.</span><br><span class="hljs-comment"># Allowed values: &quot;true&quot; or &quot;false&quot;</span><br><br><span class="hljs-attr">server-port</span>=<span class="hljs-string">19132</span><br><span class="hljs-comment"># Which IPv4 port the server should listen to.</span><br><span class="hljs-comment"># Allowed values: Integers in the range [1, 65535]</span><br><br><span class="hljs-attr">server-portv6</span>=<span class="hljs-string">19133</span><br><span class="hljs-comment"># Which IPv6 port the server should listen to.</span><br><span class="hljs-comment"># Allowed values: Integers in the range [1, 65535]</span><br><br><span class="hljs-attr">view-distance</span>=<span class="hljs-string">32</span><br><span class="hljs-comment"># The maximum allowed view distance in number of chunks.</span><br><span class="hljs-comment"># Allowed values: Positive integer equal to 5 or greater.</span><br><br><span class="hljs-attr">tick-distance</span>=<span class="hljs-string">4</span><br><span class="hljs-comment"># The world will be ticked this many chunks away from any player.</span><br><span class="hljs-comment"># Allowed values: Integers in the range [4, 12]</span><br><br><span class="hljs-attr">player-idle-timeout</span>=<span class="hljs-string">30</span><br><span class="hljs-comment"># After a player has idled for this many minutes they will be kicked. If set to 0 then players can idle indefinitely.</span><br><span class="hljs-comment"># Allowed values: Any non-negative integer.</span><br><br><span class="hljs-attr">max-threads</span>=<span class="hljs-string">8</span><br><span class="hljs-comment"># Maximum number of threads the server will try to use. If set to 0 or removed then it will use as many as possible.</span><br><span class="hljs-comment"># Allowed values: Any positive integer.</span><br><br><span class="hljs-attr">level-name</span>=<span class="hljs-string">Bedrock level</span><br><span class="hljs-comment"># Allowed values: Any string without semicolon symbol or symbols illegal for file name: /\n\r\t\f`?*\\&lt;&gt;|\&quot;:</span><br><br><span class="hljs-attr">level-seed</span>=<span class="hljs-string"></span><br><span class="hljs-comment"># Use to randomize the world</span><br><span class="hljs-comment"># Allowed values: Any string</span><br><br><span class="hljs-attr">default-player-permission-level</span>=<span class="hljs-string">member</span><br><span class="hljs-comment"># Permission level for new players joining for the first time.</span><br><span class="hljs-comment"># Allowed values: &quot;visitor&quot;, &quot;member&quot;, &quot;operator&quot;</span><br><br><span class="hljs-attr">texturepack-required</span>=<span class="hljs-string">false</span><br><span class="hljs-comment"># Force clients to use texture packs in the current world</span><br><span class="hljs-comment"># Allowed values: &quot;true&quot; or &quot;false&quot;</span><br><br><span class="hljs-attr">content-log-file-enabled</span>=<span class="hljs-string">false</span><br><span class="hljs-comment"># Enables logging content errors to a file</span><br><span class="hljs-comment"># Allowed values: &quot;true&quot; or &quot;false&quot;</span><br><br><span class="hljs-attr">compression-threshold</span>=<span class="hljs-string">1</span><br><span class="hljs-comment"># Determines the smallest size of raw network payload to compress</span><br><span class="hljs-comment"># Allowed values: 0-65535</span><br><br><span class="hljs-attr">server-authoritative-movement</span>=<span class="hljs-string">server-auth</span><br><span class="hljs-comment"># Allowed values: &quot;client-auth&quot;, &quot;server-auth&quot;, &quot;server-auth-with-rewind&quot;</span><br><span class="hljs-comment"># Enables server authoritative movement. If &quot;server-auth&quot;, the server will replay local user input on</span><br><span class="hljs-comment"># the server and send down corrections when the client&#x27;s position doesn&#x27;t match the server&#x27;s.</span><br><span class="hljs-comment"># If &quot;server-auth-with-rewind&quot; is enabled and the server sends a correction, the clients will be instructed</span><br><span class="hljs-comment"># to rewind time back to the correction time, apply the correction, then replay all the player&#x27;s inputs since then. This results in smoother and more frequent corrections.</span><br><span class="hljs-comment"># Corrections will only happen if correct-player-movement is set to true.</span><br><br><span class="hljs-attr">player-movement-score-threshold</span>=<span class="hljs-string">20</span><br><span class="hljs-comment"># The number of incongruent time intervals needed before abnormal behavior is reported.</span><br><span class="hljs-comment"># Disabled by server-authoritative-movement.</span><br><br><span class="hljs-attr">player-movement-distance-threshold</span>=<span class="hljs-string">0.3</span><br><span class="hljs-comment"># The difference between server and client positions that needs to be exceeded before abnormal behavior is detected.</span><br><span class="hljs-comment"># Disabled by server-authoritative-movement.</span><br><br><span class="hljs-attr">player-movement-duration-threshold-in-ms</span>=<span class="hljs-string">500</span><br><span class="hljs-comment"># The duration of time the server and client positions can be out of sync (as defined by player-movement-distance-threshold)</span><br><span class="hljs-comment"># before the abnormal movement score is incremented. This value is defined in milliseconds.</span><br><span class="hljs-comment"># Disabled by server-authoritative-movement.</span><br><br><span class="hljs-attr">correct-player-movement</span>=<span class="hljs-string">false</span><br><span class="hljs-comment"># If true, the client position will get corrected to the server position if the movement score exceeds the threshold.</span><br><br><br><span class="hljs-attr">server-authoritative-block-breaking</span>=<span class="hljs-string">false</span><br><span class="hljs-comment"># If true, the server will compute block mining operations in sync with the client so it can verify that the client should be able to break blocks when it thinks it can.</span><br></code></pre></td></tr></table></figure>
+
+<h2 id="Port-Forwarding-on-Ngrok"><a href="#Port-Forwarding-on-Ngrok" class="headerlink" title="Port Forwarding on Ngrok"></a>Port Forwarding on Ngrok</h2><p>You may notice the server can only be found in local network. How can I invite friends all around the world to the server? Port forwarding is a easy option.</p>
+<p><em>In <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Computer_networking">computer networking</a>, <strong>port forwarding</strong> or <strong>port mapping</strong> is an application of <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Network_address_translation">network address translation</a> (NAT) that redirects a communication request from one <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/IP_address">address</a> and <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Port_number">port number</a> combination to another while the <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Network_packet">packets</a> are traversing a network gateway, such as a <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Router_(computing)">router</a> or <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Firewall_(computing)">firewall</a>. This technique is most commonly used to make services on a host residing on a protected or <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/IP_masquerading">masqueraded</a> (internal) network available to hosts on the opposite side of the gateway (external network), by remapping the destination IP address and port number of the communication to an internal host.	—From Wikipedia</em></p>
+<p>Port forwarding can be set by logging in the wifi configuration page. The step may be varying for different network providers. I set up easily on my Rogers wifi–just a few clicks.</p>
+<h3 id="Port-forwarding-doesn’t-work"><a href="#Port-forwarding-doesn’t-work" class="headerlink" title="Port forwarding doesn’t work?"></a>Port forwarding doesn’t work?</h3><p>In some cases, network providers disable port forwarding as they have limited IP address. In this case, we can use Ngrok VPN tunnel instead.</p>
+<p><em>Ngrok exposes local servers behind NATs and firewalls to the public Internet over secure tunnels.	–From Ngork</em></p>
+<p>Set up Ngrok is also straight-forward.</p>
+<p><strong>1</strong> Register an account on Ngrok website and go to <a target="_blank" rel="noopener" href="https://dashboard.ngrok.com/get-started/setup">https://dashboard.ngrok.com/get-started/setup</a>. Download Linux(ARM) file. FTP to Raspberry Pi and unzip</p>
+<p><strong>2</strong> Add your authtoken.</p>
+<figure class="highlight perl"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs perl">./ngrok authtoken <span class="hljs-string">&#x27;your private authtoken&#x27;</span><br></code></pre></td></tr></table></figure>
+
+<p><strong>3</strong> Start tunnel. Note that Minecraft server uses tcp and port 25565. If you want to forward website or email services, notice they uses different agreement and different port.</p>
+<figure class="highlight perl"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs perl">./ngrok tcp <span class="hljs-number">25565</span><br></code></pre></td></tr></table></figure>
+
+<p><strong>4</strong> Check the tunnel IP address on <a target="_blank" rel="noopener" href="https://dashboard.ngrok.com/endpoints/status">https://dashboard.ngrok.com/endpoints/status</a>. Enter the IP address in Minecraft. The server should be able to connect.</p>
+<p><img src="https://z3.ax1x.com/2021/03/25/6LLit0.md.jpg" srcset="/img/loading.gif" lazyload alt="6LLit0.md.jpg"></p>
+<p>Multilayer is also supported.</p>
+<p><img src="https://z3.ax1x.com/2021/03/25/6LLPkq.md.jpg" srcset="/img/loading.gif" lazyload alt="6LLPkq.md.jpg"></p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/fun/" class="category-chain-item">fun</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/raspberry-Pi/" class="print-no-link">#raspberry Pi</a>
+      
+        <a href="/tags/minecraft/" class="print-no-link">#minecraft</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Running a Minecraft Server on Raspberry Pi</div>
+      <div>http://alexhcgu.github.io/2020/12/20/mcserver/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>Alex Gu</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>December 20, 2020</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2021/01/03/jscdn/" title="Add picture to blog using JsDelivr CDN">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Add picture to blog using JsDelivr CDN</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2020/11/03/am/" title="Ambilight Monitor">
+                        <span class="hidden-mobile">Ambilight Monitor</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <span>Alex</span> <i class="iconfont icon-love"></i> <span>Zidee</span> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>

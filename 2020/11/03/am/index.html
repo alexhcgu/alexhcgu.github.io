@@ -1,0 +1,664 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="https://s2.loli.net/2021/12/25/5HvmadNqYUPrWCz.png">
+  <link rel="icon" href="https://s2.loli.net/2021/12/25/5HvmadNqYUPrWCz.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Alex Gu">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="A cool design as the background lights change with the content of the monitor and makes the audience feel more immersed.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Ambilight Monitor">
+<meta property="og:url" content="http://alexhcgu.github.io/2020/11/03/am/index.html">
+<meta property="og:site_name" content="Haochen">
+<meta property="og:description" content="A cool design as the background lights change with the content of the monitor and makes the audience feel more immersed.">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://z3.ax1x.com/2021/03/24/6qIhgs.gif">
+<meta property="article:published_time" content="2020-11-03T05:00:00.000Z">
+<meta property="article:modified_time" content="2021-12-31T11:49:39.000Z">
+<meta property="article:author" content="Alex Gu">
+<meta property="article:tag" content="rgb">
+<meta property="article:tag" content="arduino">
+<meta property="article:tag" content="led">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://z3.ax1x.com/2021/03/24/6qIhgs.gif">
+  
+  
+  
+  <title>Ambilight Monitor - Haochen</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1899486_bc7tjos7w9v.css">
+<link rel="stylesheet" href="/css/macpanel.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"alexhcgu.github.io","root":"/","version":"1.9.7","typing":{"enable":false,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.0.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Haochen</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('https://s2.loli.net/2021/12/25/OiBdcAFXh1x8ICM.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle">Ambilight Monitor</span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2020-11-03 00:00" pubdate>
+          November 3, 2020 am
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          <!-- compatible with older versions-->
+          271 words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          <!-- compatible with older versions-->
+          3 mins
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">Ambilight Monitor</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>A cool design as the background lights change with the content of the monitor and makes the audience feel more immersed.</p>
+<span id="more"></span>
+
+<h2 id="About-the-Project"><a href="#About-the-Project" class="headerlink" title="About the Project"></a>About the Project</h2><p>There is a similar project called <a target="_blank" rel="noopener" href="https://learn.adafruit.com/adalight-diy-ambient-tv-lighting/">“Adalight Project Pack”</a>. It provides some kits to DIY a Ambilight. It means my project was doable. However, the Adafruit kit uses lots of individual LED bulbs mounting behind the monitor, which is costly and messy. Using LED strips may be a better choice. </p>
+<h2 id="Circuit-Design"><a href="#Circuit-Design" class="headerlink" title="Circuit Design"></a>Circuit Design</h2><p>Each LED will consume about 20mA. I have 40 LEDs in my design so 800mA is needed. The maximum current to draw from an Arduino pin is 500mA (without external power) and 1A (with external power). To simplify the circuit I decided to connect LED strips directly to Arduino pins, so I have to use the external power to feed the Arduino. Make sure to set a common ground properly.</p>
+<p><img src="https://s2.loli.net/2021/12/25/ePRZv1VbiGYCJmq.png" srcset="/img/loading.gif" lazyload></p>
+<p>Wire the LED strips and connect them to Arduino. I found a useful software called <a target="_blank" rel="noopener" href="https://lightpack.tv/pages/downloads">Prismatik</a>. It will divide the edge of the screen into several small blocks according to the LED layout, measure the average RGB value, and send it to Arduino through the USB port. Arduino will control each LED accordingly by serial communication with the help of the FastLED library.</p>
+<h2 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h2><p>The LEDs are controlled by FastLED library.</p>
+<p><em>“FastLED is a fast, efficient, easy-to-use Arduino library for programming addressable LED strips and pixels such as WS2810, WS2811, LPD8806, Neopixel and <a target="_blank" rel="noopener" href="https://github.com/FastLED/FastLED/wiki/Chipset-reference">more</a>. FastLED is used by thousands of developers, in countless art and hobby projects, and in numerous commercial products”			–From <a target="_blank" rel="noopener" href="http://fastled.io/">http://fastled.io/</a></em></p>
+<p>This is a sample code for Arduino from the Internet. There is also a similar code from Adafruit on <a target="_blank" rel="noopener" href="https://github.com/adafruit/Adalight">Github</a>.</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;FastLED.h&quot;</span></span><br><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> NUM_LEDS 38</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> LED_DATA_PIN 3</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> NUM_BYTES (NUM_LEDS*3) <span class="hljs-comment">// 3 colors  </span></span><br><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> BRIGHTNESS 100</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> UPDATES_PER_SECOND 100</span><br><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> TIMEOUT 3000</span><br><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> MODE_ANIMATION 0</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> MODE_AMBILIGHT 1</span><br><span class="hljs-type">uint8_t</span> mode = MODE_ANIMATION;<br><br>byte MESSAGE_PREAMBLE[] = &#123; <span class="hljs-number">0x00</span>, <span class="hljs-number">0x01</span>, <span class="hljs-number">0x02</span>, <span class="hljs-number">0x03</span>, <span class="hljs-number">0x04</span>, <span class="hljs-number">0x05</span>, <span class="hljs-number">0x06</span>, <span class="hljs-number">0x07</span>, <span class="hljs-number">0x08</span>, <span class="hljs-number">0x09</span> &#125;;<br><span class="hljs-type">uint8_t</span> PREAMBLE_LENGTH = <span class="hljs-number">10</span>;<br><span class="hljs-type">uint8_t</span> current_preamble_position = <span class="hljs-number">0</span>;<br><br><span class="hljs-type">unsigned</span> <span class="hljs-type">long</span> last_serial_available = <span class="hljs-number">-1L</span>;<br><br><span class="hljs-type">uint8_t</span> led_counter = <span class="hljs-number">0</span>;<br><span class="hljs-type">uint8_t</span> byte_counter = <span class="hljs-number">0</span>;<br><br>CRGB leds[NUM_LEDS];<br>byte buffer[NUM_BYTES];<br><br><span class="hljs-comment">// Filler animation attributes</span><br>CRGBPalette16 currentPalette = RainbowColors_p;<br>TBlendType    currentBlending = LINEARBLEND;<br><span class="hljs-type">uint8_t</span> startIndex = <span class="hljs-number">0</span>;<br><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">setup</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>Serial.<span class="hljs-built_in">begin</span>(<span class="hljs-number">115200</span>);<br>FastLED.<span class="hljs-built_in">clear</span>(<span class="hljs-literal">true</span>);<br>FastLED.<span class="hljs-built_in">addLeds</span>&lt;WS2811, LED_DATA_PIN, GRB&gt;(leds, NUM_LEDS);<br>FastLED.<span class="hljs-built_in">setBrightness</span>(BRIGHTNESS);<br>&#125;<br><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">loop</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>    <span class="hljs-keyword">switch</span> (mode) &#123;<br>        <span class="hljs-keyword">case</span> MODE_ANIMATION: <br>            <span class="hljs-built_in">fillLEDsFromPaletteColors</span>();<br>            <span class="hljs-keyword">break</span>;<br>        <br>        <span class="hljs-keyword">case</span> MODE_AMBILIGHT:<br>            <span class="hljs-built_in">processIncomingData</span>();<br>            <span class="hljs-keyword">break</span>;<br>    &#125;<br>    <br>&#125;<br><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">processIncomingData</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>    <span class="hljs-keyword">if</span> (<span class="hljs-built_in">waitForPreamble</span>(TIMEOUT))<br>    &#123;<br>        Serial.<span class="hljs-built_in">readBytes</span>(buffer, NUM_BYTES);<br><br>        <span class="hljs-comment">/* DEBUG</span><br><span class="hljs-comment">        for (int i = 0; i &lt; NUM_BYTES; i++)</span><br><span class="hljs-comment">        &#123;</span><br><span class="hljs-comment">            Serial.write((char)buffer[i]);</span><br><span class="hljs-comment">        &#125;</span><br><span class="hljs-comment">        */</span><br><br>        <span class="hljs-keyword">while</span> (byte_counter &lt; NUM_BYTES)<br>        &#123;<br>            byte green = buffer[byte_counter++];<br>    byte blue = buffer[byte_counter++];<br>            byte red = buffer[byte_counter++];<br><br>            leds[led_counter++] = <span class="hljs-built_in">CRGB</span>(red, green, blue);<br>        &#125;<br><br>        FastLED.<span class="hljs-built_in">show</span>();<br><br>        byte_counter = <span class="hljs-number">0</span>;<br>        led_counter = <span class="hljs-number">0</span>;<br>    &#125;<br>    <span class="hljs-keyword">else</span><br>    &#123;<br>        mode = MODE_ANIMATION;<br>    &#125;<br>&#125;<br><br><span class="hljs-function"><span class="hljs-type">bool</span> <span class="hljs-title">waitForPreamble</span><span class="hljs-params">(<span class="hljs-type">int</span> timeout)</span></span><br><span class="hljs-function"></span>&#123;<br>    last_serial_available = <span class="hljs-built_in">millis</span>();<br>    <span class="hljs-keyword">while</span> (current_preamble_position &lt; PREAMBLE_LENGTH)<br>    &#123;<br>        <span class="hljs-keyword">if</span> (Serial.<span class="hljs-built_in">available</span>() &gt; <span class="hljs-number">0</span>)<br>        &#123;<br>            last_serial_available = <span class="hljs-built_in">millis</span>();<br><br>            <span class="hljs-keyword">if</span> (Serial.<span class="hljs-built_in">read</span>() == MESSAGE_PREAMBLE[current_preamble_position])<br>            &#123;<br>                current_preamble_position++;<br>            &#125;<br>            <span class="hljs-keyword">else</span><br>            &#123;<br>                current_preamble_position = <span class="hljs-number">0</span>;<br>            &#125;<br>        &#125;<br><br>        <span class="hljs-keyword">if</span> (<span class="hljs-built_in">millis</span>() - last_serial_available &gt; timeout)<br>        &#123;<br>            <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;<br>        &#125;<br>    &#125;<br>    current_preamble_position = <span class="hljs-number">0</span>;<br>    <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;<br>&#125;<br><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">fillLEDsFromPaletteColors</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>    startIndex++; <span class="hljs-comment">// speed</span><br><br>    <span class="hljs-type">uint8_t</span> colorIndex = startIndex;<br>    <span class="hljs-keyword">for</span>( <span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; NUM_LEDS; i++) &#123;<br>        leds[i] = <span class="hljs-built_in">ColorFromPalette</span>(currentPalette, colorIndex, BRIGHTNESS, currentBlending);<br>        colorIndex += <span class="hljs-number">3</span>;<br>    &#125;<br><br>    FastLED.<span class="hljs-built_in">delay</span>(<span class="hljs-number">1000</span> / UPDATES_PER_SECOND);<br><br>    <span class="hljs-keyword">if</span> (Serial.<span class="hljs-built_in">available</span>() &gt; <span class="hljs-number">0</span>)<br>    &#123;<br>        mode = MODE_AMBILIGHT;<br>    &#125;<br></code></pre></td></tr></table></figure>
+
+<h2 id="Prismatik"><a href="#Prismatik" class="headerlink" title="Prismatik"></a>Prismatik</h2><p>Prismatik samples the screen at a certain rate and send the data to Arduino through USB port. It also provides a friendly setup wizard to set the layout of the LEDs.</p>
+<p><img src="https://z3.ax1x.com/2021/03/24/6qdmFO.png" srcset="/img/loading.gif" lazyload alt="Prismatik"></p>
+<h3 id="Setting-the-Prismatik"><a href="#Setting-the-Prismatik" class="headerlink" title="Setting the Prismatik"></a>Setting the Prismatik</h3><p><strong>1</strong> Selecting the correct LED type, serial communication port, and the Baud rate.</p>
+<p><img src="https://z3.ax1x.com/2021/03/24/6qdnYD.md.png" srcset="/img/loading.gif" lazyload></p>
+<p><strong>2</strong> Setting the correct LED layout according to the wiring.</p>
+<p><img src="https://z3.ax1x.com/2021/03/24/6qdZTK.md.png" srcset="/img/loading.gif" lazyload></p>
+<p><img src="https://z3.ax1x.com/2021/03/24/6qIhgs.gif" srcset="/img/loading.gif" lazyload></p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/project/" class="category-chain-item">project</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/rgb/" class="print-no-link">#rgb</a>
+      
+        <a href="/tags/arduino/" class="print-no-link">#arduino</a>
+      
+        <a href="/tags/led/" class="print-no-link">#led</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Ambilight Monitor</div>
+      <div>http://alexhcgu.github.io/2020/11/03/am/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>Alex Gu</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>November 3, 2020</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2020/12/20/mcserver/" title="Running a Minecraft Server on Raspberry Pi">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Running a Minecraft Server on Raspberry Pi</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2020/09/10/CorsairLightning/" title="Custom Corsair Lightning">
+                        <span class="hidden-mobile">Custom Corsair Lightning</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <span>Alex</span> <i class="iconfont icon-love"></i> <span>Zidee</span> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>
